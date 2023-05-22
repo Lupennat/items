@@ -3,7 +3,22 @@ node_modules/
 npm-debug.log
 yarn-error.log
 
-# Laravel 4 specific
+# Laravel 4 specific/.idea
+/vendor
+/node_modules
+package-lock.json
+composer.phar
+composer.lock
+phpunit.xml
+.phpunit.result.cache
+.DS_Store
+Thumbs.db
+yarn.lock
+.php-cs-fixer.cache
+.npm
+.config
+.node-gyp
+auth.json
 bootstrap/compiled.php
 app/storage/
 
