@@ -14,7 +14,7 @@ class Items extends Field
 
     public const GROUP_STYLE = 'group';
 
-    public $component = 'list';
+    public $component = 'items';
 
     /**
      * The label that should be used for the "add row" button.
