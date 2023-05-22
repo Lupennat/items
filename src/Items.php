@@ -1,12 +1,12 @@
 <?php
 
-namespace Lupennat\List;
+namespace Lupennat\Items;
 
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Fields\SupportsDependentFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class List extends Field
+class Items extends Field
 {
     use SupportsDependentFields;
 

@@ -4,7 +4,7 @@ require('./nova.mix')
 
 mix
   .setPublicPath('dist')
-  .js('resources/js/list.js', 'js')
+  .js('resources/js/items.js', 'js')
   .vue({ version: 3 })
-  .nova('lupennat/list')
+  .nova('lupennat/items')
   .version();

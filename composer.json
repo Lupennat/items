@@ -1,6 +1,6 @@
 {
-    "name": "lupennat/list",
-    "description": "Laravel Nova - List Field",
+    "name": "lupennat/items",
+    "description": "Laravel Nova - Items Field",
     "keywords": [
         "laravel",
         "nova"
@@ -22,13 +22,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Lupennat\\List\\": "src/"
+            "Lupennat\\Items\\": "src/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Lupennat\\List\\ListServiceProvider"
+                "Lupennat\\Items\\ItemsServiceProvider"
             ]
         }
     },

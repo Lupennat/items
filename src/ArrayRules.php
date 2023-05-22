@@ -1,6 +1,6 @@
 <?php
 
-namespace Lupennat\List;
+namespace Lupennat\Items;
 
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Validator;

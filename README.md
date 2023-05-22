@@ -1,23 +1,35 @@
-## Nova List Field
+1. [Requirements](#Requirements)
+2. [Installation](#Installation)
+3. [Usage](#Usage)
+4. [Validation](#validation)
+5. [Additional options](#additional-options)
+6. [Credits](#credits)
+
+## Requirements
+
+- `php: ^7.4 | ^8`
+- `laravel/nova: ^4`
+
+
+
+## Installation
+
+```
+composer require lupennat/items
+```
+
+## Usage
 
 Laravel Nova array items field with sorting, validation & many [display options](#additional-options)
 
-### Installation
-
-```
-composer require lupennat/list
-```
-
-### Usage
-
 ```php
-use Lupennat\List\List;
+use Lupennat\Items\Items;
 ```
 
 ```php
 function fields() {
     return [
-        List::make('Emails'),
+        Items::make('Emails'),
     ]
 }
 ```
@@ -30,12 +42,12 @@ public $casts = [
 ];
 ```
 
-### Validation
+## Validation
 
 Use Laravel's built in [array validation](https://laravel.com/docs/validation#validating-arrays)
 
 ```php
-List::make('Emails')->rules([
+Items::make('Emails')->rules([
     'emails.*' => 'email|min:10',
 ]),
 ```
@@ -43,20 +55,18 @@ List::make('Emails')->rules([
 Manually setting the attribute may be needed in some cases.
 
 ```php
-List::make('Long Text', 'attribute')->rules([
+Items::make('Long Text', 'attribute')->rules([
     'attribute.*' => 'email|min:10',
 ]),
 ```
 
-### Additional options
+## Additional options
 
 | function                  | description                                                     | default          |
 | ------------------------- | --------------------------------------------------------------- | ---------------- |
 | `->max(number)`           | limit number of items allowed                                   | false            |
 | `->draggable()`           | turn on drag/drop sorting                                       | false            |
 | `->onlyDraggable()`       | turn on drag/drop sorting and off add,delete,editing            | false            |
-| `->fullWidth()`           | increase the width of field area                                | false            |
-| `->maxHeight(pixel)`      | limit the height of the list                                    | false            |
 | `->inputType(text)`       | text, date, etc                                                 | "text"           |
 | `->placeholder($value)`   | the new item input text                                         | "Add a new item" |
 | `->actionText($value)`    | value for create button                                         | "Add"            |
@@ -69,4 +79,4 @@ List::make('Long Text', 'attribute')->rules([
 
 # Credits
 
-List field is based on [Nova Items Field](https://novapackages.com/collaborators/dillingham).
+Items field is based on [Nova Items Field](https://novapackages.com/collaborators/dillingham).
