@@ -79,4 +79,4 @@ Items::make('Long Text', 'attribute')->rules([
 
 # Credits
 
-Items field is based on [Nova Items Field](https://novapackages.com/collaborators/dillingham).
+Items field is based on [Nova Items Field](https://github.com/dillingham/nova-items-field).
