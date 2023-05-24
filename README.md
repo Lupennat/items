@@ -10,8 +10,6 @@
 - `php: ^7.4 | ^8`
 - `laravel/nova: ^4`
 
-
-
 ## Installation
 
 ```
@@ -67,7 +65,7 @@ Items::make('Long Text', 'attribute')->rules([
 | `->max(number)`           | limit number of items allowed                                   | false            |
 | `->draggable()`           | turn on drag/drop sorting                                       | false            |
 | `->onlyDraggable()`       | turn on drag/drop sorting and off add,delete,editing            | false            |
-| `->inputType(text)`       | text, date, etc                                                 | "text"           |
+| `->inputType(text)`       | text, date, etc (support "select")                              | "text"           |
 | `->placeholder($value)`   | the new item input text                                         | "Add a new item" |
 | `->actionText($value)`    | value for create button                                         | "Add"            |
 | `->disableAddingRows()`   | hide the "add" button                                           | false            |

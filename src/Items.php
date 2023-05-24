@@ -3,12 +3,14 @@
 namespace Lupennat\Items;
 
 use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Fields\Searchable;
 use Laravel\Nova\Fields\SupportsDependentFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Util;
 
 class Items extends Field
 {
-    use SupportsDependentFields;
+    use SupportsDependentFields, Searchable;
 
     public const LIST_STYLE = 'list';
 
@@ -71,6 +73,13 @@ class Items extends Field
      * @var string
      */
     public $style = 'group';
+
+    /**
+     * The field's options callback.
+     *
+     * @var array<string|int, array<string, mixed>|string>|\Closure|callable|\Illuminate\Support\Collection|null
+     */
+    public $optionsCallback;
 
     /**
      * Set the validation rules for the field.
@@ -183,6 +192,49 @@ class Items extends Field
     }
 
     /**
+     * Set the options for the select menu.
+     *
+     * @param array<string|int, array<string, mixed>|string>|\Closure|callable|\Illuminate\Support\Collection $options
+     *
+     * @return $this
+     */
+    public function options($options)
+    {
+        $this->optionsCallback = $options;
+
+        return $this;
+    }
+
+    /**
+     * Serialize options for the field.
+     *
+     * @param bool $searchable
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    protected function serializeOptions($searchable)
+    {
+        $options = value($this->optionsCallback);
+
+        if (is_callable($options)) {
+            $options = $options();
+        }
+
+        return collect($options ?? [])->map(function ($label, $value) use ($searchable) {
+            $value = Util::safeInt($value);
+
+            if ($searchable && isset($label['group'])) {
+                return [
+                    'label' => $label['group'] . ' - ' . $label['label'],
+                    'value' => $value,
+                ];
+            }
+
+            return is_array($label) ? $label + ['value' => $value] : ['label' => $label, 'value' => $value];
+        })->values()->all();
+    }
+
+    /**
      * Set draggable mode.
      *
      * @return $this
@@ -221,6 +273,10 @@ class Items extends Field
      */
     public function jsonSerialize(): array
     {
+        $this->withMeta([
+            'options' => $this->serializeOptions($searchable = $this->isSearchable(app(NovaRequest::class))),
+        ]);
+
         return array_merge(parent::jsonSerialize(), [
             'actionText' => $this->actionText ?? __('Add'),
             'inputType' => $this->inputType ?? 'text',
@@ -230,6 +286,7 @@ class Items extends Field
             'canAddRow' => $this->canAddRow,
             'canDeleteRow' => $this->canDeleteRow,
             'canEditRow' => $this->canEditRow,
+            'searchable' => $searchable,
         ]);
     }
 }

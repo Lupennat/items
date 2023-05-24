@@ -18,7 +18,22 @@
                             >
                                 <Icon type="menu" />
                             </button>
+                            <template v-if="isSelect">
+                                <SelectField
+                                    :disabled="!canEditRow"
+                                    :is-searchable="currentField.searchable"
+                                    :attribute="currentField.attribute"
+                                    :options="currentField.options"
+                                    :placeholder="currentField.placeholder"
+                                    :error="hasErrors(currentField.attribute + '.' + index)"
+                                    :mode="mode"
+                                    :original-value="element.value"
+                                    @select-changed="updateItemSelect(index, $event)"
+                                    :nullable="false"
+                                />
+                            </template>
                             <input
+                                v-else
                                 :value="element.value"
                                 :type="currentField.inputType"
                                 :disabled="!canEditRow"
@@ -61,6 +76,8 @@
 
 <script>
     import draggable from 'vuedraggable';
+    import SelectField from './SelectField.vue';
+
     import { DependentFormField, HandlesValidationErrors } from 'laravel-nova';
 
     export default {
@@ -68,7 +85,7 @@
 
         props: ['resourceName', 'resourceId', 'field'],
 
-        components: { draggable },
+        components: { draggable, SelectField },
 
         data() {
             return {
@@ -98,6 +115,10 @@
                 this.value.splice(index, 1, event.target.value);
             },
 
+            updateItemSelect(index, value) {
+                this.value.splice(index, 1, value);
+            },
+
             removeItem(index) {
                 this.value.splice(index, 1);
             },
@@ -107,6 +128,9 @@
             }
         },
         computed: {
+            isSelect() {
+                return this.currentField.inputType === 'select';
+            },
             canAddRow() {
                 return !this.maxReached && !this.currentlyIsReadonly && this.currentField.canAddRow;
             },
