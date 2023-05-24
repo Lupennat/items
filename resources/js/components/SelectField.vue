@@ -2,8 +2,8 @@
     <SearchInput
         v-if="!disabled && isSearchable"
         @input="performSearch"
-        @clear="clearSelection"
-        @selected="selectOption"
+        @clear="clearSelection()"
+        @selected="selectOption($event)"
         :error="error"
         :value="selectedOption"
         :data="filteredOptions"
@@ -61,6 +61,18 @@
             }
         },
 
+        watch: {
+            originalValue(val) {
+                if (val !== this.value) {
+                    let selectedOption = _.find(this.options, v => v.value == val);
+
+                    this.$nextTick(() => {
+                        this.selectOption(selectedOption, true);
+                    });
+                }
+            } 
+        },
+
         methods: {
             /**
              * Set the search string to be used to filter the select field.
@@ -71,26 +83,30 @@
             /**
              * Clear the current selection for the field.
              */
-            clearSelection() {
+            clearSelection(silent = false) {
                 this.selectedOption = '';
                 this.value = '';
 
-                this.$emit('select-changed', this.value);
+                if (!silent) {
+                    this.$emit('select-changed', this.value);
+                }
 
             },
             /**
              * Select the given option.
              */
-            selectOption(option) {
+            selectOption(option, silent = false) {
                 if (_.isNil(option)) {
-                    this.clearSelection();
+                    this.clearSelection(silent);
                     return;
                 }
 
                 this.selectedOption = option;
                 this.value = option.value;
 
-                this.$emit('select-changed', this.value);
+                if (!silent) {
+                    this.$emit('select-changed', this.value);
+                }
 
             },
 

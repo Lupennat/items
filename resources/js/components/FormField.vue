@@ -25,7 +25,7 @@
                                     :attribute="currentField.attribute"
                                     :options="currentField.options"
                                     :placeholder="currentField.placeholder"
-                                    :error="hasErrors(currentField.attribute + '.' + index)"
+                                    :error="hasErrors(index)"
                                     :mode="mode"
                                     :original-value="element.value"
                                     @select-changed="updateItemSelect(index, $event)"
@@ -40,7 +40,7 @@
                                 v-on:keyup="updateItem(index, $event)"
                                 :name="currentField.name + '[' + index + ']'"
                                 autocomplete="new-password"
-                                :class="{ 'border-red-500': hasErrors(currentField.attribute + '.' + index) }"
+                                :class="{ 'border-red-500': hasErrors(index) }"
                                 class="flex-1 form-control form-input form-input-bordered"
                             />
                             <BasicButton
@@ -54,9 +54,11 @@
                                 <Icon type="minus-circle" />
                             </BasicButton>
                         </div>
-                        <HelpText class="mt-2 help-text-error" v-if="hasErrors(currentField.attribute + '.' + index)">
-                            {{ arrayErrors[currentField.attribute + '.' + index][0] }}
-                        </HelpText>
+                        <template v-if="hasErrors(index)">
+                            <HelpText class="mt-2 help-text-error" v-for="error in getErrors(index)" >
+                                {{ error }}
+                            </HelpText>
+                        </template>
                     </div>
                 </template>
             </draggable>
@@ -123,8 +125,13 @@
                 this.value.splice(index, 1);
             },
 
-            hasErrors(key) {
-                return this.arrayErrors.hasOwnProperty(key);
+            hasErrors(index) {
+                return Object.keys(this.arrayErrors).find(key => key.split('.')[1] == index) !== undefined;
+            },
+
+            getErrors(index) {
+                const key = Object.keys(this.arrayErrors).find(key => key.split('.')[1] == index);
+                return key ? this.arrayErrors[key] : [];
             }
         },
         computed: {
